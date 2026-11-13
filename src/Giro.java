@@ -1,0 +1,29 @@
+public class Giro extends Rekening {
+    private int batasOverdraft;
+
+    public Giro(String nomor, String pemilik, int saldo, int batasOverdraft) {
+        super(nomor, pemilik, saldo);
+        this.batasOverdraft = batasOverdraft;
+    }
+
+    @Override
+    public int biayaAdminBulanan() {
+        return 15000; // selalu Rp15.000
+    }
+
+    // Override tarik dari Bab 10: boleh melewati saldo sampai batas overdraft
+    @Override
+    public boolean tarik(int jumlah) {
+        if (jumlah > 0 && jumlah <= saldo + batasOverdraft) {
+            saldo -= jumlah;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void tampilkanInfo() {
+        super.tampilkanInfo();
+        System.out.println("      Giro, batas overdraft " + formatRupiah(batasOverdraft));
+    }
+}
